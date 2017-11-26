@@ -2,12 +2,48 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <script>
-    
+    <style>
+    .message-view {
+      background: aliceblue;
+      line-height: 30px;
+      width: fit-content;
+      border-bottom: 1px solid;
+    }
+    .message-container {
+      color: blue;
+      width: fit-content;
+      background: lightgray;
+    }
+
+    </style>
+    <script type="text/javascript">
+    window.onload = (function () {
+        var messageContainer = document.querySelector('.message-container');
+        var socket = new WebSocket('ws://127.0.0.1:3035');
+        var message = '';
+        console.log(socket);
+        socket.onopen =  function (e){
+          console.log('socket connected', e);
+          socket.send('hello server!')
+        };
+        socket.onclose = function () {
+          console.log('socket connection closed');
+        };
+        socket.onmessage = function (event) {
+          console.log('message recieved:', event.data);
+          messageContainer.innerHTML += '<div class="message-view">' + event.data + '</div>';
+          setTimeout(()=>{socket.send('hello server!')}, 3000);
+        };
+        socket.ondata = function (data) {
+        }
+        socket.onerror = function (err) {
+          console.log(err);
+        };
+    }).bind(window)
     </script>
-    <title></title>
+    <title>Websockets</title>
   </head>
   <body>
-
+  <div class='message-container'></div>
   </body>
 </html>

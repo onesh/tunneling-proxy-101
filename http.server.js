@@ -1,23 +1,32 @@
 const http = require('http');
 const net = require('net');
 const url = require('url');
-const socketContainer = [];
+const frame = require('./frame');
+const headersHelper = require('./appendHeaders');
+console.log(headersHelper);
 
-// Create an HTTP tunneling proxy
+
+const socketContainer = [];
+const base64 = require('js-base64').Base64;
+// TODO tunneling proxy
 const server = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/plain' });
 });
+
 server.on('request', (req, res) => {
   console.log('incomming request from a tunneling proxy');
-  if (req.socket) {
-    socketContainer.push(req.socket);
-  }
-  if (socketContainer.length) {
-    initpinging();
-  }
 });
 
-function initpinging () {
-  setInterval(()=>{socketContainer[0].write('incomming data')}, 1000);
-}
+
+
+server.on('upgrade', (req, socket, head) => {
+
+  socket.write(headersHelper.setSecretKey(req));
+  socket.on('data', (data) => {
+    var buffer = Buffer.from('hello client!');
+    setTimeout(()=>{socket.write(frame(1, [0, 0, 0], 0x01, 0, buffer), 'UTF-8')}, 3000);
+  });
+
+});
+
 server.listen(3035, '127.0.0.1');

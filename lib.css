@@ -1,0 +1,11 @@
+.message-view {
+  background: aliceblue;
+  line-height: 30px;
+  width: fit-content;
+  border-bottom: 1px solid;
+}
+.message-container {
+  color: blue;
+  width: fit-content;
+  background: lightgray;
+}
