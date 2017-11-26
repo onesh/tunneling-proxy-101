@@ -25,5 +25,5 @@ const HASHES = require('jshashes');
   }
 };
 
-
-module.exports = new headersHelper();
+const helperInstance = new headersHelper();
+module.exports = helperInstance;
