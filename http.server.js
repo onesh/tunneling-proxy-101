@@ -7,7 +7,6 @@ console.log(headersHelper);
 
 
 const socketContainer = [];
-const base64 = require('js-base64').Base64;
 // TODO tunneling proxy
 const server = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/plain' });
